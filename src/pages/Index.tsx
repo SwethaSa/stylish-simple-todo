@@ -1,11 +1,131 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState, useEffect } from 'react';
+import { useToast } from "@/components/ui/use-toast";
+import TaskInput from '@/components/TaskInput';
+import TaskList from '@/components/TaskList';
+import TaskFilter from '@/components/TaskFilter';
+import { Task } from '@/components/TaskItem';
+import { CheckCheck, ListTodo } from 'lucide-react';
 
 const Index = () => {
+  const { toast } = useToast();
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const saved = localStorage.getItem('tasks');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Count tasks by status
+  const taskCount = {
+    all: tasks.length,
+    active: tasks.filter(task => !task.completed).length,
+    completed: tasks.filter(task => task.completed).length,
+  };
+
+  // Load tasks from localStorage on mount
+  useEffect(() => {
+    // Simulate loading to show animations
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Save tasks to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  const addTask = (title: string) => {
+    const newTask: Task = {
+      id: Date.now().toString(),
+      title,
+      completed: false,
+    };
+    
+    setTasks(prev => [newTask, ...prev]);
+    
+    toast({
+      description: "Task added successfully",
+      duration: 2000,
+    });
+  };
+
+  const toggleTaskComplete = (id: string) => {
+    setTasks(prev => 
+      prev.map(task => 
+        task.id === id 
+          ? { ...task, completed: !task.completed } 
+          : task
+      )
+    );
+  };
+
+  const deleteTask = (id: string) => {
+    setTasks(prev => prev.filter(task => task.id !== id));
+    
+    toast({
+      description: "Task deleted",
+      duration: 2000,
+    });
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-gray-50">
+      <div 
+        className={`w-full max-w-md transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+      >
+        <header className="flex flex-col items-center mb-6 animate-slide-down">
+          <div className="flex items-center justify-center w-12 h-12 mb-4 bg-todo-accent rounded-full text-white">
+            <ListTodo size={24} />
+          </div>
+          <h1 className="text-2xl font-medium text-todo-text">Minimalist Tasks</h1>
+          <p className="text-gray-500 mt-1">Simple and elegant task management</p>
+        </header>
+
+        <div className="depth-container overflow-hidden mb-4">
+          <div className="p-4">
+            <TaskInput onAddTask={addTask} />
+          </div>
+          
+          <TaskList 
+            tasks={tasks} 
+            filter={filter}
+            onToggleComplete={toggleTaskComplete}
+            onDeleteTask={deleteTask}
+          />
+          
+          {tasks.length > 0 && (
+            <div className="flex justify-center py-3 border-t border-todo-divider/50">
+              <button
+                onClick={() => {
+                  if (taskCount.completed > 0) {
+                    setTasks(prev => prev.filter(task => !task.completed));
+                    toast({
+                      description: `${taskCount.completed} completed ${taskCount.completed === 1 ? 'task' : 'tasks'} cleared`,
+                      duration: 2000,
+                    });
+                  }
+                }}
+                className="text-sm text-gray-500 hover:text-todo-accent flex items-center gap-1 px-3 py-1 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={taskCount.completed === 0}
+              >
+                <CheckCheck size={14} />
+                <span>Clear completed</span>
+              </button>
+            </div>
+          )}
+        </div>
+        
+        {tasks.length > 0 && (
+          <TaskFilter 
+            filter={filter} 
+            onFilterChange={setFilter}
+            taskCount={taskCount}
+          />
+        )}
       </div>
     </div>
   );
