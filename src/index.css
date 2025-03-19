@@ -14,17 +14,17 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 210 100% 50%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 265 80% 74%;
+    --primary-foreground: 265 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 265 40% 96.1%;
+    --secondary-foreground: 265 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 265 40% 96.1%;
+    --muted-foreground: 265 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 265 40% 96.1%;
+    --accent-foreground: 265 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -91,7 +91,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-gray-50 text-foreground font-sans antialiased;
   }
   
   /* Custom checkbox styling */
@@ -100,7 +100,7 @@
   }
   
   .task-checkbox.checked {
-    @apply bg-todo-accent border-todo-accent;
+    @apply bg-[#9b87f5] border-[#9b87f5];
   }
   
   /* Custom styles for todo items */
@@ -118,16 +118,16 @@
   
   /* Container with depth effect */
   .depth-container {
-    @apply bg-white rounded-xl shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] backdrop-blur-sm;
+    @apply bg-white rounded-xl shadow-[0_10px_40px_-15px_rgba(0,0,0,0.08)] backdrop-blur-sm;
   }
   
   /* Custom focus styles */
   .custom-focus:focus {
-    @apply outline-none ring-2 ring-todo-accent ring-opacity-50;
+    @apply outline-none ring-2 ring-[#9b87f5] ring-opacity-50;
   }
   
   /* Glass effect for filters */
   .glass-effect {
-    @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-sm;
+    @apply bg-white/95 backdrop-blur-sm border border-white/50 shadow-sm;
   }
 }

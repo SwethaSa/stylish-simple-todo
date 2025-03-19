@@ -27,10 +27,10 @@ const TaskItem: React.FC<TaskItemProps> = ({
 }) => {
   const getStatusColor = (status: Task['status']) => {
     switch(status) {
-      case 'todo': return 'bg-gray-200 text-gray-700';
-      case 'in-progress': return 'bg-blue-100 text-blue-700';
-      case 'completed': return 'bg-green-100 text-green-700';
-      default: return 'bg-gray-200 text-gray-700';
+      case 'todo': return 'bg-gray-200 text-gray-800';
+      case 'in-progress': return 'bg-purple-100 text-purple-800';
+      case 'completed': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-200 text-gray-800';
     }
   };
 
@@ -62,9 +62,9 @@ const TaskItem: React.FC<TaskItemProps> = ({
           )}
         </button>
         <div className="flex flex-col min-w-0">
-          <span className="todo-text transition-all duration-200 truncate">{task.title}</span>
+          <span className="todo-text transition-all duration-200 truncate font-medium">{task.title}</span>
           {task.dueDate && (
-            <span className="text-xs text-gray-500 flex items-center gap-1 mt-1">
+            <span className="text-xs text-gray-600 flex items-center gap-1 mt-1">
               <Clock size={12} />
               {format(task.dueDate, "MMM d, yyyy h:mm a")}
             </span>
@@ -77,7 +77,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
           value={task.status}
           onChange={(e) => onUpdateStatus(task.id, e.target.value as Task['status'])}
           className={cn(
-            "text-xs px-2 py-1 rounded-full border-0 focus:ring-0 cursor-pointer",
+            "text-xs px-2 py-1 rounded-full border-0 focus:ring-0 cursor-pointer font-medium",
             getStatusColor(task.status)
           )}
           aria-label="Update task status"

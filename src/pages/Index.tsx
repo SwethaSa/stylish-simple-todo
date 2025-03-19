@@ -117,10 +117,10 @@ const Index = () => {
         className={`w-full max-w-md transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
       >
         <header className="flex flex-col items-center mb-6 animate-slide-down">
-          <div className="flex items-center justify-center w-12 h-12 mb-4 bg-todo-accent rounded-full text-white">
+          <div className="flex items-center justify-center w-12 h-12 mb-4 bg-[#9b87f5] rounded-full text-white">
             <ListTodo size={24} />
           </div>
-          <h1 className="text-2xl font-medium text-todo-text">Minimalist Tasks</h1>
+          <h1 className="text-2xl font-medium text-gray-800">My Future</h1>
           <p className="text-gray-500 mt-1">Simple and elegant task management</p>
         </header>
 
@@ -149,7 +149,7 @@ const Index = () => {
                     });
                   }
                 }}
-                className="text-sm text-gray-500 hover:text-todo-accent flex items-center gap-1 px-3 py-1 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="text-sm text-gray-500 hover:text-[#9b87f5] flex items-center gap-1 px-3 py-1 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={taskCount.completed === 0}
               >
                 <CheckCheck size={14} />
