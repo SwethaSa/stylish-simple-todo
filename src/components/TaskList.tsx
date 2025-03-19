@@ -8,13 +8,15 @@ interface TaskListProps {
   filter: 'all' | 'active' | 'completed';
   onToggleComplete: (id: string) => void;
   onDeleteTask: (id: string) => void;
+  onUpdateStatus: (id: string, status: Task['status']) => void;
 }
 
 const TaskList: React.FC<TaskListProps> = ({ 
   tasks, 
   filter, 
   onToggleComplete, 
-  onDeleteTask 
+  onDeleteTask,
+  onUpdateStatus
 }) => {
   const filteredTasks = tasks.filter(task => {
     if (filter === 'all') return true;
@@ -42,12 +44,13 @@ const TaskList: React.FC<TaskListProps> = ({
 
   return (
     <div className="overflow-hidden">
-      {filteredTasks.map((task, index) => (
+      {filteredTasks.map((task) => (
         <TaskItem
           key={task.id}
           task={task}
           onToggleComplete={onToggleComplete}
           onDeleteTask={onDeleteTask}
+          onUpdateStatus={onUpdateStatus}
         />
       ))}
     </div>

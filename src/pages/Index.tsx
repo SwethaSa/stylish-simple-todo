@@ -11,7 +11,19 @@ const Index = () => {
   const { toast } = useToast();
   const [tasks, setTasks] = useState<Task[]>(() => {
     const saved = localStorage.getItem('tasks');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const parsedTasks = saved ? JSON.parse(saved) : [];
+      // Convert string dates back to Date objects
+      return parsedTasks.map((task: any) => ({
+        ...task,
+        dueDate: task.dueDate ? new Date(task.dueDate) : null,
+        // Ensure status property exists for backward compatibility
+        status: task.status || (task.completed ? 'completed' : 'todo')
+      }));
+    } catch (e) {
+      console.error('Error parsing saved tasks', e);
+      return [];
+    }
   });
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [isLoading, setIsLoading] = useState(true);
@@ -38,11 +50,13 @@ const Index = () => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
-  const addTask = (title: string) => {
+  const addTask = (title: string, dueDate?: Date | null) => {
     const newTask: Task = {
       id: Date.now().toString(),
       title,
       completed: false,
+      status: 'todo',
+      dueDate: dueDate || null
     };
     
     setTasks(prev => [newTask, ...prev]);
@@ -57,10 +71,35 @@ const Index = () => {
     setTasks(prev => 
       prev.map(task => 
         task.id === id 
-          ? { ...task, completed: !task.completed } 
+          ? { 
+              ...task, 
+              completed: !task.completed,
+              // Update status to match the completed state
+              status: !task.completed ? 'completed' : task.status === 'completed' ? 'todo' : task.status
+            } 
           : task
       )
     );
+  };
+
+  const updateTaskStatus = (id: string, status: Task['status']) => {
+    setTasks(prev => 
+      prev.map(task => 
+        task.id === id 
+          ? { 
+              ...task, 
+              status,
+              // Update completed state to match status
+              completed: status === 'completed'
+            } 
+          : task
+      )
+    );
+    
+    toast({
+      description: `Task marked as ${status.replace('-', ' ')}`,
+      duration: 2000,
+    });
   };
 
   const deleteTask = (id: string) => {
@@ -95,6 +134,7 @@ const Index = () => {
             filter={filter}
             onToggleComplete={toggleTaskComplete}
             onDeleteTask={deleteTask}
+            onUpdateStatus={updateTaskStatus}
           />
           
           {tasks.length > 0 && (
