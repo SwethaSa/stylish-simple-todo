@@ -114,7 +114,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-gray-50">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-[#F2FCE2]">
       <div 
         className={`w-full ${isMobile ? 'max-w-md' : 'max-w-3xl'} transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
       >
