@@ -28,7 +28,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
   const getStatusColor = (status: Task['status']) => {
     switch(status) {
       case 'todo': return 'bg-gray-200 text-gray-800';
-      case 'in-progress': return 'bg-purple-100 text-purple-800';
+      case 'in-progress': return 'bg-orange-100 text-orange-800';
       case 'completed': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-200 text-gray-800';
     }

@@ -66,7 +66,7 @@ export default {
 				todo: {
 					'bg': '#FFFFFF',
 					'text': '#1A1A1A',
-					'accent': '#9b87f5', // Changed from blue to purple
+					'accent': '#a02727', // Changed from purple to maroon
 					'divider': '#F2F2F7',
 					'completed': '#8E8E93',
 					'hover': '#F9F9FB'

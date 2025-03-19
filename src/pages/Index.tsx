@@ -6,9 +6,11 @@ import TaskList from '@/components/TaskList';
 import TaskFilter from '@/components/TaskFilter';
 import { Task } from '@/components/TaskItem';
 import { CheckCheck, ListTodo } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   const [tasks, setTasks] = useState<Task[]>(() => {
     const saved = localStorage.getItem('tasks');
     try {
@@ -114,10 +116,10 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-gray-50">
       <div 
-        className={`w-full max-w-md transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        className={`w-full ${isMobile ? 'max-w-md' : 'max-w-3xl'} transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
       >
         <header className="flex flex-col items-center mb-6 animate-slide-down">
-          <div className="flex items-center justify-center w-12 h-12 mb-4 bg-[#9b87f5] rounded-full text-white">
+          <div className="flex items-center justify-center w-12 h-12 mb-4 bg-[#a02727] rounded-full text-white">
             <ListTodo size={24} />
           </div>
           <h1 className="text-2xl font-medium text-gray-800">My Future</h1>
@@ -149,7 +151,7 @@ const Index = () => {
                     });
                   }
                 }}
-                className="text-sm text-gray-500 hover:text-[#9b87f5] flex items-center gap-1 px-3 py-1 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="text-sm text-gray-500 hover:text-[#a02727] flex items-center gap-1 px-3 py-1 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={taskCount.completed === 0}
               >
                 <CheckCheck size={14} />
