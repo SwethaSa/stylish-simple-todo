@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -65,7 +66,7 @@ export default {
 				todo: {
 					'bg': '#FFFFFF',
 					'text': '#1A1A1A',
-					'accent': '#00c8ff', // Changed from maroon to space blue
+					'accent': '#00c8ff',
 					'divider': '#F2F2F7',
 					'completed': '#8E8E93',
 					'hover': '#F9F9FB'
@@ -123,16 +124,6 @@ export default {
 						opacity: '1'
 					}
 				},
-				'floating-slow': {
-					'0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-					'25%': { transform: 'translateY(-15px) rotate(-2deg)' },
-					'50%': { transform: 'translateY(-5px) rotate(2deg)' },
-					'75%': { transform: 'translateY(-10px) rotate(-1deg)' },
-				},
-				'galaxy-spin': {
-					'0%': { transform: 'rotate(0deg)' },
-					'100%': { transform: 'rotate(360deg)' }
-				},
 				'nebula-pulse': {
 					'0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
 					'50%': { opacity: '1', transform: 'scale(1.05)' }
@@ -147,8 +138,6 @@ export default {
 				'slide-down': 'slide-down 0.3s ease-out',
 				'scale': 'scale 0.2s ease-out',
 				'check-mark': 'check-mark 0.3s ease-out forwards',
-				'floating-slow': 'floating-slow 10s ease-in-out infinite',
-				'galaxy-spin': 'galaxy-spin 60s linear infinite',
 				'nebula-pulse': 'nebula-pulse 8s ease-in-out infinite'
 			}
 		}

@@ -167,101 +167,29 @@ const Index = () => {
     });
   };
 
-  // Add dynamic space particles
-  const renderSpaceParticles = () => {
-    return Array.from({ length: 50 }).map((_, i) => (
-      <div 
-        key={`particle-${i}`}
-        className="space-dust"
-        style={{
-          left: `${Math.random() * 100}vw`,
-          top: `${Math.random() * 100}vh`,
-          animationDelay: `${Math.random() * 15}s`,
-          animationDuration: `${15 + Math.random() * 15}s`,
-        }}
-      />
-    ));
-  };
-
-  // Render floating stars with improved variety
-  const renderFloatingStars = () => {
-    return Array.from({ length: 40 }).map((_, i) => (
-      <div 
-        key={`star-${i}`}
-        className={`absolute ${Math.random() > 0.7 ? 'twinkle' : 'animate-pulse'} text-white opacity-70`}
-        style={{
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-          animationDelay: `${Math.random() * 5}s`,
-          animationDuration: `${3 + Math.random() * 7}s`,
-          transform: `rotate(${Math.random() * 360}deg) scale(${0.7 + Math.random() * 0.6})`,
-        }}
-      >
-        {Math.random() > 0.6 ? <Star size={Math.random() * 8 + 2} /> : Math.random() > 0.5 ? '✦' : '✧'}
-      </div>
-    ));
-  };
-
-  // Render cosmic elements (planets, nebulae)
-  const renderCosmicElements = () => {
-    return (
-      <>
-        <div 
-          className="planet animate-floating-slow" 
-          style={{
-            width: '100px',
-            height: '100px',
-            right: '5%',
-            top: '20%',
-            opacity: 0.7,
-          }}
-        />
-        
-        <div 
-          className="nebula animate-nebula-pulse" 
-          style={{
-            width: '300px',
-            height: '300px',
-            left: '10%',
-            bottom: '10%',
-          }}
-        />
-        
-        <div 
-          className="galaxy animate-galaxy-spin" 
-          style={{
-            width: '200px',
-            height: '200px',
-            right: '15%',
-            bottom: '15%',
-          }}
-        />
-      </>
-    );
-  };
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       {/* Cosmic background */}
       <div className="cosmic-bg" />
       
-      {/* Space theme background elements */}
+      {/* Only keep the main gradient element behind the card */}
       <div className="absolute inset-0 overflow-hidden">
-        {renderSpaceParticles()}
-        {renderFloatingStars()}
-        {renderCosmicElements()}
+        {/* Only keep the nebula/gradient behind the card */}
+        <div 
+          className="nebula animate-nebula-pulse" 
+          style={{
+            width: '300px',
+            height: '300px',
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 0
+          }}
+        />
         <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0a0a12] to-transparent"></div>
       </div>
 
-      {/* Animated elements */}
-      <div className="absolute right-[10%] top-[15%] animate-floating">
-        <Rocket size={32} className="text-[#8eff8e] transform rotate-45" />
-      </div>
-      
-      <div className="absolute left-[15%] top-[25%] animate-floating" style={{ animationDelay: '2s' }}>
-        <Sparkles size={24} className="text-[#8eff8e] opacity-70" />
-      </div>
-      
       <div 
         className={`w-full ${isMobile ? 'max-w-md' : 'max-w-3xl'} transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'} relative z-10`}
       >

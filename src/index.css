@@ -163,42 +163,16 @@
     animation: floating 5s ease-in-out infinite;
   }
 
-  /* Star twinkle animation */
-  @keyframes twinkle {
-    0%, 100% {
-      opacity: 0.2;
+  /* Nebula pulse animation - keep this one as we're using it */
+  @keyframes nebula-pulse {
+    0%, 100% { 
+      opacity: 0.6; 
+      transform: scale(1); 
     }
-    50% {
-      opacity: 1;
+    50% { 
+      opacity: 1; 
+      transform: scale(1.05); 
     }
-  }
-
-  .twinkle {
-    animation: twinkle 2s ease-in-out infinite;
-  }
-  
-  /* Space dust particle animation */
-  @keyframes space-dust {
-    0% {
-      transform: translateY(0) translateX(0);
-      opacity: 0;
-    }
-    50% {
-      opacity: 0.8;
-    }
-    100% {
-      transform: translateY(-100vh) translateX(100vw);
-      opacity: 0;
-    }
-  }
-  
-  .space-dust {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    animation: space-dust 15s linear infinite;
   }
 }
 
@@ -228,22 +202,10 @@
   @apply text-[#3333ff] drop-shadow-[0_0_5px_rgba(51,51,255,0.7)];
 }
 
-/* Animated planet elements */
-.planet {
-  @apply absolute rounded-full shadow-lg;
-  background: radial-gradient(circle at 30% 30%, #8eff8e 0%, #00c8ff 80%);
-  box-shadow: 0 0 20px rgba(0, 200, 255, 0.6);
-}
-
+/* Only keep the nebula style for the gradient behind the card */
 .nebula {
   @apply absolute rounded-full opacity-30 blur-2xl;
-  background: radial-gradient(circle at 50% 50%, #c770f0 0%, transparent 70%);
-}
-
-.galaxy {
-  @apply absolute opacity-20;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 800 800'%3E%3Cpath fill='%23FFFFFF' d='M435.5 775Q391 774 356 751t-96.5-46.5q-61.5-23.5-109-60T77 561q-28-47-37.5-102T34 350q4-54 27-99t66-68q43-23 97.5-52.5T324 75q50-10 100-14.5t102 24q52 28.5 90 72t59 86q21 42.5 47 76t19 91q-7 57.5-42.5 105T614 598q-40 27-71 59.5T475 718q-28 21.5-39.5 57Z'/%3E%3C/svg%3E");
-  transform-origin: center center;
+  background: radial-gradient(circle at 50% 50%, #00c8ff 0%, transparent 70%);
 }
 
 /* Advanced container styles */
