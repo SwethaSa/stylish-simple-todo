@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Plus, Calendar } from 'lucide-react';
+import { Plus, Calendar, AlarmClock } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
@@ -35,7 +36,7 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
           value={taskTitle}
           onChange={(e) => setTaskTitle(e.target.value)}
           placeholder="Add a new task..."
-          className="w-full px-4 py-3 pr-24 text-todo-text placeholder-gray-400/70 bg-white border border-todo-divider/50 rounded-xl shadow-sm transition-all duration-200 focus:border-todo-accent custom-focus"
+          className="w-full px-4 py-3 pr-24 text-white placeholder-gray-400/70 bg-black/30 border border-white/20 rounded-xl shadow-sm transition-all duration-200 focus:border-[#ff00cc] custom-focus"
           aria-label="Add a new task"
         />
         <div className="absolute right-12 top-1/2 -translate-y-1/2">
@@ -43,13 +44,13 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
             <PopoverTrigger asChild>
               <button 
                 type="button"
-                className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200 text-gray-400 hover:text-todo-accent"
+                className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200 text-indigo-300 hover:text-[#ff00cc]"
                 aria-label="Set due date"
               >
                 <Calendar size={18} />
               </button>
             </PopoverTrigger>
-            <PopoverContent className="p-0 w-auto" align="end">
+            <PopoverContent className="p-0 w-auto bg-black/80 border border-white/20" align="end">
               <div className="p-3">
                 <div className="space-y-3">
                   <CalendarComponent
@@ -70,12 +71,12 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
                         setDueDate(null);
                       }
                     }}
-                    className="rounded-md pointer-events-auto"
+                    className="rounded-md pointer-events-auto bg-black/50 text-white"
                   />
                   {dueDate && (
                     <>
                       <div className="flex justify-between items-center">
-                        <label htmlFor="time" className="text-sm font-medium">Time:</label>
+                        <label htmlFor="time" className="text-sm font-medium text-white">Time:</label>
                         <input
                           id="time"
                           type="time"
@@ -88,7 +89,7 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
                               setDueDate(newDate);
                             }
                           }}
-                          className="border rounded px-2 py-1 text-sm"
+                          className="bg-black/50 text-white border border-white/20 rounded px-2 py-1 text-sm"
                         />
                       </div>
                       <div className="flex justify-between">
@@ -97,6 +98,7 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
                           variant="ghost" 
                           size="sm"
                           onClick={() => setDueDate(null)}
+                          className="text-white hover:bg-white/10"
                         >
                           Clear
                         </Button>
@@ -104,6 +106,7 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
                           type="button" 
                           size="sm"
                           onClick={() => setShowDatePicker(false)}
+                          className="bg-gradient-to-r from-[#ff00cc] to-[#3333ff] text-white border-0"
                         >
                           Done
                         </Button>
@@ -118,15 +121,15 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
         <button
           type="submit"
           disabled={!taskTitle.trim()}
-          className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200 bg-todo-accent text-white opacity-90 hover:opacity-100 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200 bg-gradient-to-r from-[#ff00cc] to-[#3333ff] text-white opacity-90 hover:opacity-100 disabled:opacity-40 disabled:cursor-not-allowed"
           aria-label="Add task"
         >
           <Plus size={18} strokeWidth={2.5} />
         </button>
       </div>
       {dueDate && (
-        <div className="mt-2 text-xs flex items-center gap-1 text-todo-accent">
-          <Calendar size={12} />
+        <div className="mt-2 text-xs flex items-center gap-1 text-[#ff00cc]">
+          <AlarmClock size={12} />
           <span>Due: {format(dueDate, "MMM d, yyyy 'at' h:mm a")}</span>
         </div>
       )}

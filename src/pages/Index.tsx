@@ -1,12 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import TaskInput from '@/components/TaskInput';
 import TaskList from '@/components/TaskList';
 import TaskFilter from '@/components/TaskFilter';
 import { Task } from '@/components/TaskItem';
-import { CheckCheck, ListTodo } from 'lucide-react';
+import { CheckCheck, ListTodo, Star, Rocket } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { requestNotificationPermission, scheduleNotification } from '@/services/notificationService';
 
 const Index = () => {
   const { toast } = useToast();
@@ -31,6 +31,7 @@ const Index = () => {
   });
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
   // Count tasks by status
   const taskCount = {
@@ -38,6 +39,22 @@ const Index = () => {
     active: tasks.filter(task => !task.completed).length,
     completed: tasks.filter(task => task.completed).length,
   };
+
+  // Request notification permission on mount
+  useEffect(() => {
+    const setupNotifications = async () => {
+      const permission = await requestNotificationPermission();
+      setNotificationsEnabled(permission);
+      if (permission) {
+        toast({
+          description: "Task notifications enabled!",
+          duration: 3000,
+        });
+      }
+    };
+    
+    setupNotifications();
+  }, [toast]);
 
   // Load tasks from localStorage on mount
   useEffect(() => {
@@ -48,6 +65,20 @@ const Index = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  // Schedule notifications for all tasks with due dates
+  useEffect(() => {
+    if (notificationsEnabled) {
+      tasks.forEach(task => {
+        if (task.dueDate && !task.completed) {
+          scheduleNotification(
+            { id: task.id, title: task.title },
+            task.dueDate
+          );
+        }
+      });
+    }
+  }, [tasks, notificationsEnabled]);
 
   // Save tasks to localStorage whenever they change
   useEffect(() => {
@@ -65,6 +96,11 @@ const Index = () => {
     };
     
     setTasks(prev => [newTask, ...prev]);
+    
+    // Schedule notification if due date is set
+    if (dueDate && notificationsEnabled) {
+      scheduleNotification({ id: newTask.id, title }, dueDate);
+    }
     
     toast({
       description: "Task added successfully",
@@ -131,20 +167,48 @@ const Index = () => {
     });
   };
 
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-[#E5FFBC]">
+  const renderFloatingStars = () => {
+    return Array.from({ length: 20 }).map((_, i) => (
       <div 
-        className={`w-full ${isMobile ? 'max-w-md' : 'max-w-3xl'} transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        key={i}
+        className="absolute animate-pulse text-white opacity-70"
+        style={{
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          animationDelay: `${Math.random() * 5}s`,
+          animationDuration: `${3 + Math.random() * 7}s`,
+        }}
+      >
+        {Math.random() > 0.7 ? <Star size={Math.random() * 10 + 5} /> : '•'}
+      </div>
+    ));
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] relative overflow-hidden">
+      {/* Space theme background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {renderFloatingStars()}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#24243e] to-transparent"></div>
+      </div>
+
+      {/* Animated rocket */}
+      <div className="absolute right-10 top-20 animate-bounce">
+        <Rocket size={32} className="text-[#8eff8e] transform rotate-45" />
+      </div>
+      
+      <div 
+        className={`w-full ${isMobile ? 'max-w-md' : 'max-w-3xl'} transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'} relative z-10`}
       >
         <header className="flex flex-col items-center mb-6 animate-slide-down">
-          <div className="flex items-center justify-center w-12 h-12 mb-4 bg-[#a02727] rounded-full text-white">
+          <div className="flex items-center justify-center w-12 h-12 mb-4 bg-gradient-to-r from-[#ff00cc] to-[#3333ff] rounded-full text-white shadow-[0_0_15px_rgba(255,0,204,0.7)]">
             <ListTodo size={24} />
           </div>
-          <h1 className="text-2xl font-medium text-gray-800">My Future</h1>
-          <p className="text-gray-500 mt-1">Simple and elegant task management</p>
+          <h1 className="text-2xl font-medium text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">My Future</h1>
+          <p className="text-[#b3b3ff] mt-1">Space-themed task management</p>
         </header>
 
-        <div className="depth-container overflow-hidden mb-4">
+        <div className="backdrop-blur-md bg-black/30 border border-white/10 rounded-xl overflow-hidden mb-4 shadow-[0_0_20px_rgba(51,51,255,0.5)]">
           <div className="p-4">
             <TaskInput onAddTask={addTask} />
           </div>
@@ -159,7 +223,7 @@ const Index = () => {
           />
           
           {tasks.length > 0 && (
-            <div className="flex justify-center py-3 border-t border-todo-divider/50">
+            <div className="flex justify-center py-3 border-t border-white/10">
               <button
                 onClick={() => {
                   if (taskCount.completed > 0) {
@@ -170,7 +234,7 @@ const Index = () => {
                     });
                   }
                 }}
-                className="text-sm text-gray-500 hover:text-[#a02727] flex items-center gap-1 px-3 py-1 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="text-sm text-gray-300 hover:text-[#ff00cc] flex items-center gap-1 px-3 py-1 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={taskCount.completed === 0}
               >
                 <CheckCheck size={14} />

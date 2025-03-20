@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Check, Trash2, Clock, MessageSquare } from 'lucide-react';
+import { Check, Trash2, Clock, MessageSquare, AlarmClock } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { 
@@ -42,10 +42,10 @@ const TaskItem: React.FC<TaskItemProps> = ({
   
   const getStatusColor = (status: Task['status']) => {
     switch(status) {
-      case 'todo': return 'bg-gray-200 text-gray-800';
-      case 'in-progress': return 'bg-orange-100 text-orange-800';
-      case 'completed': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-200 text-gray-800';
+      case 'todo': return 'bg-indigo-900/60 text-indigo-200 border border-indigo-500/30';
+      case 'in-progress': return 'bg-orange-900/60 text-orange-200 border border-orange-500/30';
+      case 'completed': return 'bg-green-900/60 text-green-200 border border-green-500/30';
+      default: return 'bg-indigo-900/60 text-indigo-200 border border-indigo-500/30';
     }
   };
 
@@ -56,11 +56,20 @@ const TaskItem: React.FC<TaskItemProps> = ({
     setCommentsOpen(false);
   };
 
+  const isTaskDueSoon = () => {
+    if (!task.dueDate || task.completed) return false;
+    const now = new Date();
+    const dueDate = new Date(task.dueDate);
+    const timeDiff = dueDate.getTime() - now.getTime();
+    // Return true if due in less than 24 hours
+    return timeDiff > 0 && timeDiff < 24 * 60 * 60 * 1000;
+  };
+
   return (
     <>
       <div 
         className={cn(
-          "todo-item group flex items-center justify-between px-4 py-3 border-b border-todo-divider/50 animate-slide-up",
+          "todo-item group flex items-center justify-between px-4 py-3 border-b border-white/10 animate-slide-up",
           task.completed && "completed"
         )}
       >
@@ -85,10 +94,13 @@ const TaskItem: React.FC<TaskItemProps> = ({
             )}
           </button>
           <div className="flex flex-col min-w-0">
-            <span className="todo-text transition-all duration-200 truncate font-medium">{task.title}</span>
+            <span className="todo-text transition-all duration-200 truncate font-medium text-white">{task.title}</span>
             {task.dueDate && (
-              <span className="text-xs text-gray-600 flex items-center gap-1 mt-1">
-                <Clock size={12} />
+              <span className={cn(
+                "text-xs flex items-center gap-1 mt-1",
+                isTaskDueSoon() ? "text-pink-300 neon-pulse" : "text-gray-400"
+              )}>
+                {isTaskDueSoon() ? <AlarmClock size={12} /> : <Clock size={12} />}
                 {format(task.dueDate, "MMM d, yyyy h:mm a")}
               </span>
             )}
@@ -98,7 +110,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => setCommentsOpen(true)}
-            className="text-gray-500 hover:text-[#a02727] transition-colors"
+            className="text-indigo-300 hover:text-[#ff00cc] transition-colors"
             aria-label="Add comments"
           >
             <MessageSquare size={16} />
@@ -129,7 +141,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
       </div>
 
       <Dialog open={commentsOpen} onOpenChange={setCommentsOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md bg-black/80 border border-white/20 text-white">
           <DialogHeader>
             <DialogTitle>Comments for "{task.title}"</DialogTitle>
           </DialogHeader>
@@ -138,14 +150,16 @@ const TaskItem: React.FC<TaskItemProps> = ({
               placeholder="Add notes, comments, or details about this task..."
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
-              className="min-h-[150px]"
+              className="min-h-[150px] bg-black/50 border-white/20 text-white"
             />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setCommentsOpen(false)}>
+            <Button variant="outline" onClick={() => setCommentsOpen(false)}
+              className="bg-transparent border-white/20 text-white hover:bg-white/10">
               Cancel
             </Button>
-            <Button onClick={handleSaveComments}>
+            <Button onClick={handleSaveComments}
+              className="bg-gradient-to-r from-[#ff00cc] to-[#3333ff] text-white border-0">
               Save Comments
             </Button>
           </DialogFooter>
