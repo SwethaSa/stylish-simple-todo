@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,12 +64,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				todo: {
-					'bg': '#FFFFFF',
-					'text': '#1A1A1A',
-					'accent': '#00c8ff', // Changed from maroon to space blue
-					'divider': '#F2F2F7',
+					'bg': '#0a0a15',
+					'text': '#ffffff',
+					'accent': '#00c8ff',
+					'divider': '#1a1a30',
 					'completed': '#8E8E93',
-					'hover': '#F9F9FB'
+					'hover': '#151530'
 				}
 			},
 			borderRadius: {
@@ -136,6 +137,24 @@ export default {
 				'nebula-pulse': {
 					'0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
 					'50%': { opacity: '1', transform: 'scale(1.05)' }
+				},
+				'cosmic-glow': {
+					'0%, 100%': { 
+						boxShadow: '0 0 15px rgba(0, 200, 255, 0.4), 0 0 30px rgba(0, 200, 255, 0.2)',
+						transform: 'scale(1)'
+					},
+					'50%': { 
+						boxShadow: '0 0 25px rgba(0, 200, 255, 0.6), 0 0 50px rgba(0, 200, 255, 0.3)',
+						transform: 'scale(1.03)'
+					}
+				},
+				'star-shine': {
+					'0%, 100%': { 
+						filter: 'drop-shadow(0 0 3px rgba(255, 255, 255, 0.7))'
+					},
+					'50%': { 
+						filter: 'drop-shadow(0 0 8px rgba(0, 200, 255, 0.9))'
+					}
 				}
 			},
 			animation: {
@@ -149,7 +168,9 @@ export default {
 				'check-mark': 'check-mark 0.3s ease-out forwards',
 				'floating-slow': 'floating-slow 10s ease-in-out infinite',
 				'galaxy-spin': 'galaxy-spin 60s linear infinite',
-				'nebula-pulse': 'nebula-pulse 8s ease-in-out infinite'
+				'nebula-pulse': 'nebula-pulse 8s ease-in-out infinite',
+				'cosmic-glow': 'cosmic-glow 5s ease-in-out infinite',
+				'star-shine': 'star-shine 3s ease-in-out infinite'
 			}
 		}
 	},
