@@ -167,7 +167,7 @@ const Index = () => {
     });
   };
 
-  // Render space particles with improved glow
+  // Add dynamic space particles
   const renderSpaceParticles = () => {
     return Array.from({ length: 50 }).map((_, i) => (
       <div 
@@ -178,45 +178,42 @@ const Index = () => {
           top: `${Math.random() * 100}vh`,
           animationDelay: `${Math.random() * 15}s`,
           animationDuration: `${15 + Math.random() * 15}s`,
-          boxShadow: `0 0 ${Math.random() * 3 + 1}px rgba(0, 200, 255, 0.8)`,
         }}
       />
     ));
   };
 
-  // Render floating stars with improved variety and glow
+  // Render floating stars with improved variety
   const renderFloatingStars = () => {
     return Array.from({ length: 40 }).map((_, i) => (
       <div 
         key={`star-${i}`}
-        className={`absolute ${Math.random() > 0.7 ? 'twinkle' : 'animate-star-shine'} text-white opacity-70`}
+        className={`absolute ${Math.random() > 0.7 ? 'twinkle' : 'animate-pulse'} text-white opacity-70`}
         style={{
           left: `${Math.random() * 100}%`,
           top: `${Math.random() * 100}%`,
           animationDelay: `${Math.random() * 5}s`,
           animationDuration: `${3 + Math.random() * 7}s`,
           transform: `rotate(${Math.random() * 360}deg) scale(${0.7 + Math.random() * 0.6})`,
-          filter: `drop-shadow(0 0 ${Math.random() * 5 + 2}px rgba(0, 200, 255, 0.7))`,
         }}
       >
-        {Math.random() > 0.6 ? <Star size={Math.random() * 8 + 2} className="fill-white" /> : Math.random() > 0.5 ? '✦' : '✧'}
+        {Math.random() > 0.6 ? <Star size={Math.random() * 8 + 2} /> : Math.random() > 0.5 ? '✦' : '✧'}
       </div>
     ));
   };
 
-  // Render cosmic elements (planets, nebulae) with enhanced glow
+  // Render cosmic elements (planets, nebulae)
   const renderCosmicElements = () => {
     return (
       <>
         <div 
-          className="planet animate-cosmic-glow animate-floating-slow" 
+          className="planet animate-floating-slow" 
           style={{
             width: '100px',
             height: '100px',
             right: '5%',
             top: '20%',
             opacity: 0.7,
-            filter: 'drop-shadow(0 0 20px rgba(0, 200, 255, 0.5))',
           }}
         />
         
@@ -227,70 +224,16 @@ const Index = () => {
             height: '300px',
             left: '10%',
             bottom: '10%',
-            filter: 'blur(30px) drop-shadow(0 0 30px rgba(199, 112, 240, 0.6))',
           }}
         />
         
         <div 
-          className="galaxy animate-galaxy-spin animate-cosmic-glow" 
+          className="galaxy animate-galaxy-spin" 
           style={{
             width: '200px',
             height: '200px',
             right: '15%',
             bottom: '15%',
-            filter: 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))',
-          }}
-        />
-
-        {/* Add a glowing diamond-like crystal */}
-        <div
-          className="absolute animate-cosmic-glow"
-          style={{
-            width: '120px',
-            height: '120px',
-            left: '25%',
-            top: '30%',
-            background: 'linear-gradient(135deg, rgba(0, 200, 255, 0.2), rgba(51, 51, 255, 0.2))',
-            clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
-            transform: 'rotate(15deg)',
-            boxShadow: '0 0 30px rgba(0, 200, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.5)',
-            backdropFilter: 'blur(5px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-          }}
-        />
-
-        {/* Add a hexagonal element */}
-        <div
-          className="absolute animate-floating-slow animate-cosmic-glow"
-          style={{
-            width: '90px',
-            height: '90px',
-            right: '35%',
-            top: '60%',
-            background: 'linear-gradient(45deg, rgba(51, 51, 255, 0.2), rgba(0, 200, 255, 0.2))',
-            clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
-            boxShadow: '0 0 30px rgba(51, 51, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.5)',
-            backdropFilter: 'blur(5px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            animationDelay: '2s',
-          }}
-        />
-
-        {/* Add a ring element */}
-        <div
-          className="absolute animate-galaxy-spin"
-          style={{
-            width: '150px',
-            height: '150px',
-            left: '65%',
-            top: '10%',
-            borderRadius: '50%',
-            border: '4px solid transparent',
-            borderTopColor: 'rgba(0, 200, 255, 0.4)',
-            borderBottomColor: 'rgba(51, 51, 255, 0.4)',
-            boxShadow: '0 0 30px rgba(0, 200, 255, 0.5)',
-            transform: 'rotate(45deg)',
-            filter: 'blur(1px)',
           }}
         />
       </>
@@ -311,11 +254,11 @@ const Index = () => {
       </div>
 
       {/* Animated elements */}
-      <div className="absolute right-[10%] top-[15%] animate-floating drop-shadow-[0_0_15px_rgba(142,255,142,0.7)]">
+      <div className="absolute right-[10%] top-[15%] animate-floating">
         <Rocket size={32} className="text-[#8eff8e] transform rotate-45" />
       </div>
       
-      <div className="absolute left-[15%] top-[25%] animate-floating drop-shadow-[0_0_15px_rgba(142,255,142,0.7)]" style={{ animationDelay: '2s' }}>
+      <div className="absolute left-[15%] top-[25%] animate-floating" style={{ animationDelay: '2s' }}>
         <Sparkles size={24} className="text-[#8eff8e] opacity-70" />
       </div>
       
