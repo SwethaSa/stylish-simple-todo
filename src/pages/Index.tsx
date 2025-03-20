@@ -20,7 +20,9 @@ const Index = () => {
         ...task,
         dueDate: task.dueDate ? new Date(task.dueDate) : null,
         // Ensure status property exists for backward compatibility
-        status: task.status || (task.completed ? 'completed' : 'todo')
+        status: task.status || (task.completed ? 'completed' : 'todo'),
+        // Add comments field if it doesn't exist
+        comments: task.comments || ''
       }));
     } catch (e) {
       console.error('Error parsing saved tasks', e);
@@ -58,7 +60,8 @@ const Index = () => {
       title,
       completed: false,
       status: 'todo',
-      dueDate: dueDate || null
+      dueDate: dueDate || null,
+      comments: ''
     };
     
     setTasks(prev => [newTask, ...prev]);
@@ -104,6 +107,21 @@ const Index = () => {
     });
   };
 
+  const updateTaskComments = (id: string, comments: string) => {
+    setTasks(prev =>
+      prev.map(task =>
+        task.id === id
+          ? { ...task, comments }
+          : task
+      )
+    );
+    
+    toast({
+      description: "Comments updated",
+      duration: 2000,
+    });
+  };
+
   const deleteTask = (id: string) => {
     setTasks(prev => prev.filter(task => task.id !== id));
     
@@ -114,7 +132,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-[#F2FCE2]">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-[#E5FFBC]">
       <div 
         className={`w-full ${isMobile ? 'max-w-md' : 'max-w-3xl'} transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
       >
@@ -137,6 +155,7 @@ const Index = () => {
             onToggleComplete={toggleTaskComplete}
             onDeleteTask={deleteTask}
             onUpdateStatus={updateTaskStatus}
+            onUpdateComments={updateTaskComments}
           />
           
           {tasks.length > 0 && (

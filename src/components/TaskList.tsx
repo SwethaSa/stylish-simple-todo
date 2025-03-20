@@ -9,6 +9,7 @@ interface TaskListProps {
   onToggleComplete: (id: string) => void;
   onDeleteTask: (id: string) => void;
   onUpdateStatus: (id: string, status: Task['status']) => void;
+  onUpdateComments?: (id: string, comments: string) => void;
 }
 
 const TaskList: React.FC<TaskListProps> = ({ 
@@ -16,7 +17,8 @@ const TaskList: React.FC<TaskListProps> = ({
   filter, 
   onToggleComplete, 
   onDeleteTask,
-  onUpdateStatus
+  onUpdateStatus,
+  onUpdateComments
 }) => {
   const filteredTasks = tasks.filter(task => {
     if (filter === 'all') return true;
@@ -51,6 +53,7 @@ const TaskList: React.FC<TaskListProps> = ({
           onToggleComplete={onToggleComplete}
           onDeleteTask={onDeleteTask}
           onUpdateStatus={onUpdateStatus}
+          onUpdateComments={onUpdateComments}
         />
       ))}
     </div>
