@@ -13,6 +13,16 @@ const queryClient = new QueryClient();
 const App = () => {
   useEffect(() => {
     document.title = "My Future";
+    
+    // Add meta theme-color for mobile browser UI
+    const metaThemeColor = document.createElement('meta');
+    metaThemeColor.name = 'theme-color';
+    metaThemeColor.content = '#0a0a12';
+    document.head.appendChild(metaThemeColor);
+    
+    return () => {
+      document.head.removeChild(metaThemeColor);
+    };
   }, []);
 
   return (
@@ -20,7 +30,19 @@ const App = () => {
       <TooltipProvider>
         <div className="app-container min-h-screen overflow-hidden">
           <Toaster />
-          <Sonner />
+          <Sonner 
+            theme="dark"
+            position="top-right"
+            className="space-theme-toasts"
+            toastOptions={{
+              style: {
+                background: 'rgba(10, 10, 30, 0.8)',
+                color: '#fff',
+                border: '1px solid rgba(0, 200, 255, 0.3)',
+                backdropFilter: 'blur(10px)',
+              },
+            }}
+          />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />

@@ -4,7 +4,7 @@ import TaskInput from '@/components/TaskInput';
 import TaskList from '@/components/TaskList';
 import TaskFilter from '@/components/TaskFilter';
 import { Task } from '@/components/TaskItem';
-import { CheckCheck, ListTodo, Star, Rocket } from 'lucide-react';
+import { CheckCheck, ListTodo, Star, Rocket, Sparkles, GlassWater } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { requestNotificationPermission, scheduleNotification } from '@/services/notificationService';
 
@@ -167,48 +167,113 @@ const Index = () => {
     });
   };
 
-  const renderFloatingStars = () => {
-    return Array.from({ length: 20 }).map((_, i) => (
+  // Add dynamic space particles
+  const renderSpaceParticles = () => {
+    return Array.from({ length: 50 }).map((_, i) => (
       <div 
-        key={i}
-        className="absolute animate-pulse text-white opacity-70"
+        key={`particle-${i}`}
+        className="space-dust"
+        style={{
+          left: `${Math.random() * 100}vw`,
+          top: `${Math.random() * 100}vh`,
+          animationDelay: `${Math.random() * 15}s`,
+          animationDuration: `${15 + Math.random() * 15}s`,
+        }}
+      />
+    ));
+  };
+
+  // Render floating stars with improved variety
+  const renderFloatingStars = () => {
+    return Array.from({ length: 40 }).map((_, i) => (
+      <div 
+        key={`star-${i}`}
+        className={`absolute ${Math.random() > 0.7 ? 'twinkle' : 'animate-pulse'} text-white opacity-70`}
         style={{
           left: `${Math.random() * 100}%`,
           top: `${Math.random() * 100}%`,
           animationDelay: `${Math.random() * 5}s`,
           animationDuration: `${3 + Math.random() * 7}s`,
+          transform: `rotate(${Math.random() * 360}deg) scale(${0.7 + Math.random() * 0.6})`,
         }}
       >
-        {Math.random() > 0.7 ? <Star size={Math.random() * 10 + 5} /> : '•'}
+        {Math.random() > 0.6 ? <Star size={Math.random() * 8 + 2} /> : Math.random() > 0.5 ? '✦' : '✧'}
       </div>
     ));
   };
 
+  // Render cosmic elements (planets, nebulae)
+  const renderCosmicElements = () => {
+    return (
+      <>
+        <div 
+          className="planet animate-floating-slow" 
+          style={{
+            width: '100px',
+            height: '100px',
+            right: '5%',
+            top: '20%',
+            opacity: 0.7,
+          }}
+        />
+        
+        <div 
+          className="nebula animate-nebula-pulse" 
+          style={{
+            width: '300px',
+            height: '300px',
+            left: '10%',
+            bottom: '10%',
+          }}
+        />
+        
+        <div 
+          className="galaxy animate-galaxy-spin" 
+          style={{
+            width: '200px',
+            height: '200px',
+            right: '15%',
+            bottom: '15%',
+          }}
+        />
+      </>
+    );
+  };
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+      {/* Cosmic background */}
+      <div className="cosmic-bg" />
+      
       {/* Space theme background elements */}
       <div className="absolute inset-0 overflow-hidden">
+        {renderSpaceParticles()}
         {renderFloatingStars()}
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#24243e] to-transparent"></div>
+        {renderCosmicElements()}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0a0a12] to-transparent"></div>
       </div>
 
-      {/* Animated rocket */}
-      <div className="absolute right-10 top-20 animate-bounce">
+      {/* Animated elements */}
+      <div className="absolute right-[10%] top-[15%] animate-floating">
         <Rocket size={32} className="text-[#8eff8e] transform rotate-45" />
+      </div>
+      
+      <div className="absolute left-[15%] top-[25%] animate-floating" style={{ animationDelay: '2s' }}>
+        <Sparkles size={24} className="text-[#8eff8e] opacity-70" />
       </div>
       
       <div 
         className={`w-full ${isMobile ? 'max-w-md' : 'max-w-3xl'} transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'} relative z-10`}
       >
         <header className="flex flex-col items-center mb-6 animate-slide-down">
-          <div className="flex items-center justify-center w-12 h-12 mb-4 bg-gradient-to-r from-[#ff00cc] to-[#3333ff] rounded-full text-white shadow-[0_0_15px_rgba(255,0,204,0.7)]">
+          <div className="flex items-center justify-center w-12 h-12 mb-4 bg-gradient-to-r from-[#00c8ff] to-[#3333ff] rounded-full text-white shadow-[0_0_15px_rgba(0,200,255,0.7)]">
             <ListTodo size={24} />
           </div>
           <h1 className="text-2xl font-medium text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">My Future</h1>
-          <p className="text-[#b3b3ff] mt-1">Space-themed task management</p>
+          <p className="text-[#b3e0ff] mt-1">Space-themed task management</p>
         </header>
 
-        <div className="backdrop-blur-md bg-black/30 border border-white/10 rounded-xl overflow-hidden mb-4 shadow-[0_0_20px_rgba(51,51,255,0.5)]">
+        <div className="cosmic-container mb-4">
           <div className="p-4">
             <TaskInput onAddTask={addTask} />
           </div>
@@ -234,7 +299,7 @@ const Index = () => {
                     });
                   }
                 }}
-                className="text-sm text-gray-300 hover:text-[#ff00cc] flex items-center gap-1 px-3 py-1 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="text-sm text-gray-300 hover:text-[#00c8ff] flex items-center gap-1 px-3 py-1 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={taskCount.completed === 0}
               >
                 <CheckCheck size={14} />
